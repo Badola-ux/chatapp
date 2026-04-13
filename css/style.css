@@ -1,0 +1,50 @@
+.background{
+    background: linear-gradient(to right, gray, dimgray);
+}
+
+.mid-section{
+    height: 525px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.first,
+.second{
+    width: 100%;
+}
+
+.first{
+    height:90%;
+    overflow: auto;
+    padding: 20px 0;
+}
+
+.second{
+    height: 7%;
+}
+
+.left,
+.right,
+.center{
+    max-width: 60%;
+    clear: both;
+    text-align: right;
+}
+
+.left{
+    float: left;
+}
+
+.right{
+    float: right;
+    text-align: right;
+}
+
+.center{
+    width:30%;
+    margin: auto;
+    margin-bottom: 10px;
+    text-align: center;
+    max-width: 60%;
+}
