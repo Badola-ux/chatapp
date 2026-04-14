@@ -5,46 +5,55 @@ const messageInput = document.querySelector("#message")
 
 const name = prompt("Enter Your Name :")
 
-socket.emit("user-joined",name)
+if(name){
+    socket.emit("user-joined", name)
+}
 
-function generateMessage(message,side){
+// Generate message UI
+function generateMessage(message, side){
     let div = document.createElement("div")
-    div.classList.add("alert")
 
-    if(side==="left"){
-        div.classList.add("alert-secondary")
+    if(side === "left"){
         div.classList.add("left")
     }
-    else if(side==="right"){
-        div.classList.add("alert-primary")
+    else if(side === "right"){
         div.classList.add("right")
-}
-else{
-        div.classList.add("alert-danger")
+    }
+    else{
         div.classList.add("center")
-}
-div.innerHTML = message
-first.appendChild(div)
+    }
+
+    div.innerText = message
+    first.appendChild(div)
+
+    // auto scroll
+    first.scrollTop = first.scrollHeight
 }
 
+// New user joined
 socket.on("new-user-joined", (name) =>{
-    if(name)
-    generateMessage(`${name} joined the chat`,"center")
+    generateMessage(`${name} joined the chat`, "center")
 })
 
+// User left
 socket.on("user-left", (name) =>{
-    if(name)
-    generateMessage(`${name} left the chat`,"center")
+    generateMessage(`${name} left the chat`, "center")
 })
 
-socket.on("receive", (message,name) =>{
-    generateMessage(`${name} : ${message}`,"left" )
+// Receive message
+socket.on("receive", (data) =>{
+    generateMessage(`${data.name} : ${data.message}`, "left")
 })
 
+// Send message
 function postData(){
-    let msg = messageInput.value
-    messageInput.value = ""
+    let msg = messageInput.value.trim()
 
-    generateMessage(`${msg}:You`,"right")
-    socket.emit("send",msg)
+    if(msg === "") return
+
+    generateMessage(`You : ${msg}`, "right")
+
+    socket.emit("send", msg)
+
+    messageInput.value = ""
 }
